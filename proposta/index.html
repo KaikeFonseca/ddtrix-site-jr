@@ -1,0 +1,650 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ddtrix · Proposta visual</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Marca (da logo) */
+  --marinho-900: #0f1a3d;
+  --marinho-800: #16234f;
+  --marinho-700: #1b2b5e;
+  --marinho-600: #2a3d7a;
+  --marinho-100: #e6e9f3;
+  --marinho-50:  #f2f4f9;
+  --vermelho-700: #a81c28;
+  --vermelho-600: #c62330;
+  --vermelho-50:  #fdecee;
+
+  /* Neutros puxados para o marinho */
+  --fundo: #f4f5f9;
+  --superficie: #ffffff;
+  --linha: #e2e5ee;
+  --linha-forte: #cfd4e2;
+  --texto: #141a2e;
+  --texto-2: #4a5270;
+  --texto-3: #6b7290;
+
+  /* Categorias */
+  --caixas: #0b6e86;  --caixas-50: #e3f3f7;
+  --dedet: #2f7a3b;   --dedet-50: #e6f3e8;
+  --desr: #8a5a12;    --desr-50: #f8eedc;
+
+  /* Estados */
+  --ok: #2f7a3b;
+  --pendencia: #b45309; --pendencia-50: #fdf1e2;
+  --alerta: #c62330;
+
+  --raio: 14px;
+  --raio-p: 10px;
+  --sombra: 0 1px 2px rgba(15, 26, 61, .06), 0 4px 16px -4px rgba(15, 26, 61, .08);
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  --fonte: "Archivo", system-ui, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  font-family: var(--fonte);
+  font-variation-settings: "wdth" 100;
+  background: var(--fundo);
+  color: var(--texto);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--marinho-700); color: #fff; }
+:focus-visible { outline: 2px solid var(--marinho-600); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { font-stretch: 112%; font-variation-settings: "wdth" 112; letter-spacing: -0.015em; line-height: 1.15; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(26px, 3.2vw, 34px); font-weight: 750; }
+h2 { font-size: 20px; font-weight: 700; }
+h3 { font-size: 16px; font-weight: 700; }
+p { margin: 0; }
+.num { font-variant-numeric: tabular-nums; }
+.svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* ---------- Casca ---------- */
+.casca { min-height: 100dvh; display: flex; flex-direction: column; }
+.topo { background: var(--superficie); position: sticky; top: 0; z-index: 5; }
+.topo-linha { max-width: 1240px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 24px; }
+.marca { display: flex; align-items: center; }
+.marca img { height: 42px; width: auto; display: block; }
+.listras { height: 6px; display: grid; grid-template-rows: 2px 2px; row-gap: 2px; }
+.listras::before, .listras::after { content: ""; background: var(--vermelho-600); }
+.listras::after { background: var(--marinho-700); }
+.nav { display: none; gap: 4px; margin-left: 8px; }
+.nav a { text-decoration: none; color: var(--texto-2); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 999px; transition: background-color .15s ease, color .15s ease; }
+.nav a:hover { background: var(--marinho-50); color: var(--marinho-700); }
+.nav a[aria-current="page"] { background: var(--marinho-700); color: #fff; }
+.quem { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--texto-2); }
+.avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--marinho-100); color: var(--marinho-700); display: grid; place-items: center; font-weight: 700; font-size: 14px; }
+.quem .nome { display: none; }
+.abas { position: fixed; bottom: 0; left: 0; right: 0; z-index: 6; background: var(--superficie); border-top: 1px solid var(--linha); display: grid; grid-template-columns: repeat(4, 1fr); padding: 6px 8px calc(6px + env(safe-area-inset-bottom)); }
+.abas a { display: grid; justify-items: center; gap: 2px; padding: 6px 0; text-decoration: none; color: var(--texto-3); font-size: 12px; font-weight: 600; border-radius: 10px; }
+.abas a[aria-current="page"] { color: var(--marinho-700); }
+.abas a[aria-current="page"] .svg { stroke-width: 2.2; }
+main { flex: 1; width: 100%; max-width: 1240px; margin: 0 auto; padding: 20px 16px 104px; }
+
+@media (min-width: 900px) {
+  .nav { display: flex; }
+  .abas { display: none; }
+  .quem .nome { display: inline; }
+  main { padding: 32px 24px 56px; }
+  .topo-linha { padding: 12px 24px; }
+}
+
+/* ---------- Componentes ---------- */
+.botao { font: inherit; font-weight: 650; font-size: 15px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border-radius: 12px; border: 1px solid transparent; cursor: pointer; text-decoration: none; transition: background-color .15s ease, transform .12s var(--ease-out), border-color .15s ease; }
+.botao:active { transform: scale(.97); }
+.botao-primario { background: var(--marinho-700); color: #fff; }
+.botao-primario:hover { background: var(--marinho-800); }
+.botao-destaque { background: var(--vermelho-600); color: #fff; }
+.botao-destaque:hover { background: var(--vermelho-700); }
+.botao-secundario { background: var(--superficie); color: var(--marinho-700); border-color: var(--linha-forte); }
+.botao-secundario:hover { border-color: var(--marinho-600); }
+.botao-fantasma { background: transparent; color: var(--texto-2); min-height: 40px; padding: 0 12px; }
+.botao-fantasma:hover { background: var(--marinho-50); }
+.bloco { background: var(--superficie); border-radius: var(--raio); box-shadow: var(--sombra); }
+.campo { display: grid; gap: 6px; }
+.campo label, .rotulo { font-size: 13px; font-weight: 650; color: var(--texto-2); }
+.entrada { font: inherit; width: 100%; min-height: 46px; padding: 10px 14px; border-radius: var(--raio-p); border: 1px solid var(--linha-forte); background: #fff; color: var(--texto); transition: border-color .15s ease, box-shadow .15s ease; }
+.entrada:focus { outline: none; border-color: var(--marinho-600); box-shadow: 0 0 0 3px rgba(42, 61, 122, .15); }
+.entrada::placeholder { color: var(--texto-3); }
+.etiqueta { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 650; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+.cat-caixas { background: var(--caixas-50); color: var(--caixas); }
+.cat-dedet { background: var(--dedet-50); color: var(--dedet); }
+.cat-desr { background: var(--desr-50); color: var(--desr); }
+.etq-pend { background: var(--pendencia-50); color: var(--pendencia); }
+.etq-alerta { background: var(--vermelho-50); color: var(--vermelho-700); }
+.etq-ok { background: var(--dedet-50); color: var(--ok); }
+.etq-neutra { background: var(--marinho-50); color: var(--marinho-700); }
+.numero-os { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 13px; letter-spacing: .02em; color: var(--marinho-700); background: var(--marinho-50); border: 1px dashed var(--marinho-600); border-radius: 6px; padding: 2px 8px; white-space: nowrap; }
+.maquininha { display: inline-flex; align-items: center; gap: 8px; background: #fff6b3; border-radius: 6px; padding: 4px 10px; font-size: 13.5px; font-weight: 600; }
+.maquininha b { color: var(--vermelho-600); font-weight: 800; letter-spacing: .02em; }
+.titulo-tela { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin-bottom: 20px; }
+.sub { color: var(--texto-2); margin-top: 6px; }
+
+/* ---------- Início ---------- */
+.inicio { display: grid; gap: 20px; }
+.colar { padding: 20px; display: grid; gap: 14px; }
+.colar textarea { min-height: 150px; resize: vertical; line-height: 1.55; font-size: 15px; }
+.colar-acoes { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.colar-acoes .dica { font-size: 13px; color: var(--texto-3); }
+.lado { display: grid; gap: 20px; }
+.atalhos { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.atalho { display: grid; gap: 10px; padding: 16px; text-decoration: none; color: var(--texto); background: var(--superficie); border-radius: var(--raio); box-shadow: var(--sombra); transition: transform .2s var(--ease-out); }
+.atalho:hover { transform: translateY(-2px); }
+.atalho .ico { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--marinho-50); color: var(--marinho-700); }
+.atalho strong { font-size: 15px; }
+.atalho span { font-size: 13px; color: var(--texto-3); display: none; }
+.hoje { padding: 20px; }
+.hoje-topo { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.hoje-topo a { font-size: 14px; color: var(--marinho-600); font-weight: 600; text-decoration: none; }
+.mini-lista { list-style: none; margin: 0; padding: 0; }
+.mini-lista li { display: grid; grid-template-columns: 52px 1fr auto; gap: 12px; align-items: center; padding: 12px 0; border-top: 1px solid var(--linha); }
+.mini-lista li:first-child { border-top: 0; }
+.mini-lista .hora { font-weight: 700; font-variant-numeric: tabular-nums; color: var(--marinho-700); }
+.mini-lista .cli { font-weight: 600; font-size: 15px; line-height: 1.3; }
+.mini-lista .srv { font-size: 13px; color: var(--texto-3); }
+@media (min-width: 900px) {
+  .inicio { grid-template-columns: 1.35fr 1fr; align-items: start; }
+  .inicio .lado { display: grid; gap: 20px; }
+  .atalho span { display: block; }
+  .colar { padding: 28px; }
+  .colar textarea { min-height: 220px; }
+}
+
+/* ---------- Emitir: o dia em linha ---------- */
+.emitir { display: grid; gap: 20px; }
+.resumo { display: flex; flex-wrap: wrap; gap: 8px; }
+.selecao { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 16px; position: sticky; top: 72px; z-index: 3; }
+.selecao label { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 15px; }
+.selecao .acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--marinho-700); margin: 0; }
+.dia { list-style: none; margin: 0; padding: 0; position: relative; }
+.dia::before { content: ""; position: absolute; left: 27px; top: 10px; bottom: 10px; width: 2px; background: repeating-linear-gradient(to bottom, var(--linha-forte) 0 6px, transparent 6px 12px); }
+.parada { position: relative; display: grid; grid-template-columns: 56px 1fr; gap: 12px; padding-bottom: 14px; }
+.parada .marco { position: relative; z-index: 1; display: grid; align-content: start; justify-items: center; gap: 4px; padding-top: 14px; }
+.parada .marco time { font-weight: 750; font-size: 15px; font-variant-numeric: tabular-nums; color: var(--marinho-700); background: var(--fundo); padding: 2px 0; }
+.ponto { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--fundo); box-shadow: 0 0 0 2px currentColor; background: currentColor; }
+.ponto.ok { color: var(--ok); }
+.ponto.pend { color: var(--pendencia); }
+.ponto.alerta { color: var(--alerta); }
+.os { padding: 16px; display: grid; gap: 10px; cursor: pointer; transition: box-shadow .2s ease, transform .2s var(--ease-out); }
+.os:hover { box-shadow: 0 1px 2px rgba(15,26,61,.06), 0 10px 28px -8px rgba(15,26,61,.18); }
+.os-topo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.os-topo input { margin-right: 2px; }
+.os-topo .numero-os { margin-left: auto; }
+.os .cliente { font-size: 17px; font-weight: 700; line-height: 1.3; }
+.os .reconhecido { font-size: 13px; color: var(--ok); font-weight: 600; display: inline-flex; gap: 6px; align-items: center; }
+.os .local { font-size: 14px; color: var(--texto-2); display: flex; gap: 8px; }
+.os .local .svg { width: 16px; height: 16px; margin-top: 3px; color: var(--texto-3); }
+.os .nota { font-size: 14px; color: var(--texto-2); background: var(--marinho-50); border-radius: 8px; padding: 8px 12px; }
+.aviso { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; border-radius: 10px; padding: 10px 12px; }
+.aviso .svg { width: 18px; height: 18px; margin-top: 2px; }
+.aviso-pend { background: var(--pendencia-50); color: #7a3a06; }
+.aviso-alerta { background: var(--vermelho-50); color: var(--vermelho-700); }
+.aviso b { font-weight: 700; }
+.original { padding: 20px; display: grid; gap: 12px; align-content: start; }
+.original pre { margin: 0; white-space: pre-wrap; font-family: var(--fonte); font-size: 14px; line-height: 1.6; color: var(--texto-2); max-height: 560px; overflow: auto; }
+.original mark { background: #fff2b8; color: var(--texto); border-radius: 3px; padding: 0 2px; }
+@media (min-width: 900px) {
+  .emitir { grid-template-columns: 1fr 360px; align-items: start; }
+  .emitir .col-direita { position: sticky; top: 96px; }
+  .os { padding: 18px 20px; }
+}
+
+/* ---------- Conferir uma O.S. ---------- */
+.conferir { display: grid; gap: 20px; }
+.form-os { padding: 20px; display: grid; gap: 18px; }
+.grade { display: grid; align-items: start; gap: 14px; grid-template-columns: 1fr 1fr; }
+.grade .largo { grid-column: 1 / -1; }
+.secao-form { display: grid; gap: 14px; padding-top: 18px; border-top: 1px solid var(--linha); }
+.secao-form:first-of-type { border-top: 0; padding-top: 0; }
+.segmentado { display: grid; grid-template-columns: repeat(3, 1fr); background: var(--marinho-50); border-radius: 12px; padding: 4px; gap: 4px; }
+.segmentado button { font: inherit; font-size: 14px; font-weight: 650; border: 0; background: transparent; border-radius: 9px; min-height: 40px; color: var(--texto-2); cursor: pointer; }
+.segmentado button[aria-pressed="true"] { background: #fff; color: var(--marinho-700); box-shadow: 0 1px 3px rgba(15,26,61,.12); }
+.origem { font-size: 12.5px; color: var(--texto-3); }
+.origem q { font-style: normal; color: var(--texto-2); background: #fff7cf; padding: 0 4px; border-radius: 3px; quotes: "“" "”"; }
+.campo.pendente .entrada { border-color: var(--pendencia); background: #fffaf3; }
+.barra-acoes { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+.previa { padding: 20px; display: grid; gap: 14px; justify-items: center; }
+.previa-topo { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.folha { width: 100%; max-width: 420px; aspect-ratio: 210 / 297; background: #fff; border: 1px solid var(--linha); box-shadow: 0 8px 30px -12px rgba(15,26,61,.25); padding: 6% 7%; font-family: Arial, sans-serif; font-size: 7px; line-height: 1.35; color: #222; display: grid; align-content: start; gap: 6px; }
+.folha .cab { display: grid; grid-template-columns: 1fr auto; gap: 6px; border-bottom: 1px solid #999; padding-bottom: 5px; }
+.folha .cab b { font-size: 8px; }
+.folha .tit { text-align: center; font-weight: 700; font-size: 8px; background: #eee; padding: 2px; }
+.folha .lin { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 10px; }
+.folha .preench { background: #e9edfb; outline: 1px solid #b9c4ef; padding: 0 2px; border-radius: 1px; }
+.folha .barras { display: grid; gap: 3px; }
+.folha .barras i { display: block; height: 4px; background: #eee; border-radius: 1px; }
+.folha .obs-pag { background: #fff200; padding: 1px 3px; }
+.folha .obs-pag b { color: #d00; }
+.folha .ass { margin-top: 10px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: center; }
+.folha .ass span { border-top: 1px solid #555; padding-top: 2px; }
+.ajuste { font-size: 13px; color: var(--texto-3); }
+.abas-conferir { display: grid; grid-template-columns: 1fr 1fr; }
+@media (min-width: 900px) {
+  .conferir { grid-template-columns: 1fr 440px; align-items: start; }
+  .previa { position: sticky; top: 96px; }
+  .abas-conferir { display: none; }
+  .form-os { padding: 28px; }
+}
+
+/* ---------- Clientes e histórico ---------- */
+.ferramentas { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+.busca { position: relative; flex: 1 1 260px; }
+.busca .svg { position: absolute; left: 14px; top: 13px; color: var(--texto-3); }
+.busca .entrada { padding-left: 44px; }
+.filtros { display: flex; gap: 8px; flex-wrap: wrap; }
+.filtro { font: inherit; font-size: 14px; font-weight: 600; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--linha-forte); background: #fff; color: var(--texto-2); cursor: pointer; }
+.filtro[aria-pressed="true"] { background: var(--marinho-700); border-color: var(--marinho-700); color: #fff; }
+.lista { list-style: none; margin: 0; padding: 0; }
+.lista > li { display: grid; gap: 4px 16px; padding: 16px 20px; border-top: 1px solid var(--linha); grid-template-columns: 1fr auto; align-items: center; }
+.lista > li:first-child { border-top: 0; }
+.lista .t { font-weight: 650; font-size: 16px; }
+.lista .d { font-size: 14px; color: var(--texto-3); }
+.lista .meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.cabecalho-lista { display: none; }
+.grupo-data { font-size: 13px; font-weight: 700; color: var(--texto-3); padding: 18px 20px 6px; background: var(--marinho-50); border-top: 1px solid var(--linha); }
+@media (min-width: 900px) {
+  .lista-clientes > li { grid-template-columns: 1.6fr 1.4fr 1fr auto; }
+  .lista-hist > li { grid-template-columns: 150px 1.4fr 1.2fr 120px auto; }
+  .cabecalho-lista { display: grid; padding: 12px 20px; font-size: 13px; font-weight: 650; color: var(--texto-3); border-bottom: 1px solid var(--linha); }
+  .lista-clientes + .cabecalho-lista, .cab-clientes { grid-template-columns: 1.6fr 1.4fr 1fr auto; }
+  .cab-hist { grid-template-columns: 150px 1.4fr 1.2fr 120px auto; }
+  .so-celular { display: none !important; }
+}
+@media (max-width: 899px) {
+  .so-pc { display: none !important; }
+}
+
+/* Navegação da proposta (não faz parte do sistema) */
+.tela { display: none; }
+.tela:target, .tela.ativa { display: block; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-casa" viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></symbol>
+  <symbol id="i-pessoas" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.4 3.3-5.5 6.5-5.5s5.9 2.1 6.5 5.5"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.8c1.9.7 3.2 2.5 3.5 5.2"/></symbol>
+  <symbol id="i-relogio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-engrenagem" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-varinha" viewBox="0 0 24 24"><path d="m4 20 11-11"/><path d="m13 7 4 4"/><path d="M18 3v3M16.5 4.5h3M20 9v2M19 10h2M9 3v2M8 4h2"/></symbol>
+  <symbol id="i-colar" viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="4" rx="1"/><path d="M8 5H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2"/></symbol>
+  <symbol id="i-pino" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-alerta" viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17.2v.1"/></symbol>
+  <symbol id="i-pdf" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M7 4h10l3 4v12H4V8z"/><path d="M8 13h8M8 17h5"/></symbol>
+  <symbol id="i-whats" viewBox="0 0 24 24"><path d="M4 20l1.3-4A8 8 0 1 1 8 18.7z"/><path d="M9 9.5c.3 2.3 2.2 4.2 4.5 4.5l1.2-1.2 2 1-.4 1.6c-3.8.4-8.3-4.1-7.9-7.9L10 7.1l1 2z"/></symbol>
+  <symbol id="i-lupa" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-voltar" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-imprimir" viewBox="0 0 24 24"><path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="1"/><path d="M7 14h10v7H7z"/></symbol>
+</svg>
+
+<!-- ======================= INÍCIO ======================= -->
+<section class="tela ativa" id="inicio">
+<div class="casca">
+  <header class="topo">
+    <div class="topo-linha">
+      <a class="marca" href="#inicio"><img src="logo-ddtrix.png" alt="Ddtrix Desentupidora e Dedetizadora"></a>
+      <nav class="nav" aria-label="Menu">
+        <a href="#inicio" aria-current="page">Início</a><a href="#emitir">Emitir O.S.</a><a href="#clientes">Clientes</a><a href="#historico">Histórico</a><a href="#">Administração</a>
+      </nav>
+      <div class="quem"><span class="nome">Eduarda</span><span class="avatar">E</span></div>
+    </div>
+    <div class="listras" aria-hidden="true"></div>
+  </header>
+  <main>
+    <div class="titulo-tela">
+      <div>
+        <h1>Bom dia, Eduarda</h1>
+        <p class="sub">Quarta-feira, 11 de novembro</p>
+      </div>
+    </div>
+    <div class="inicio">
+      <form class="bloco colar" onsubmit="location.hash='emitir';return false">
+        <div>
+          <h2>Interpretar agenda</h2>
+          <p class="sub">Cole a agenda do WhatsApp, com um ou vários clientes.</p>
+        </div>
+        <textarea class="entrada" placeholder="AGENDA (Quarta-Feira) 11/11&#10;1.&#10;📅 DATA: 11/11/2026&#10;👤 CLIENTE: …"></textarea>
+        <div class="colar-acoes">
+          <button class="botao botao-primario" type="submit"><svg class="svg"><use href="#i-varinha"/></svg>Interpretar</button>
+          <button class="botao botao-secundario" type="button"><svg class="svg"><use href="#i-colar"/></svg>Colar</button>
+          <span class="dica so-pc">Ou preencha uma O.S. em branco</span>
+        </div>
+      </form>
+      <div class="lado">
+        <nav class="atalhos" aria-label="Atalhos">
+          <a class="atalho" href="#clientes"><span class="ico"><svg class="svg"><use href="#i-pessoas"/></svg></span><strong>Clientes</strong><span>412 cadastrados</span></a>
+          <a class="atalho" href="#historico"><span class="ico"><svg class="svg"><use href="#i-relogio"/></svg></span><strong>Histórico</strong><span>O.S. emitidas</span></a>
+          <a class="atalho" href="#"><span class="ico"><svg class="svg"><use href="#i-engrenagem"/></svg></span><strong>Admin.</strong><span>Modelos e ajustes</span></a>
+        </nav>
+        <section class="bloco hoje">
+          <div class="hoje-topo"><h2>Hoje</h2><a href="#historico">Ver todas</a></div>
+          <ul class="mini-lista">
+            <li><span class="hora">09:00</span><div><div class="cli">Pedro Luiz Silva Pinto</div><div class="srv">Limpeza de caixa d'água</div></div><span class="etiqueta etq-ok">Emitida</span></li>
+            <li><span class="hora">09:00</span><div><div class="cli">Condomínio Portal do Ipanema</div><div class="srv">Dedetização completa / Desratização</div></div><span class="etiqueta etq-ok">Emitida</span></li>
+            <li><span class="hora">11:00</span><div><div class="cli">Cond. Residencial Vista Ipanema</div><div class="srv">Dedetização simples / Desratização</div></div><span class="etiqueta etq-neutra">Rascunho</span></li>
+            <li><span class="hora">14:30</span><div><div class="cli">Condomínio Mirante Ipanema</div><div class="srv">Dedetização completa / Desratização</div></div><span class="etiqueta etq-neutra">Rascunho</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </main>
+  <nav class="abas" aria-label="Menu">
+    <a href="#inicio" aria-current="page"><svg class="svg"><use href="#i-casa"/></svg>Início</a>
+    <a href="#emitir"><svg class="svg"><use href="#i-doc"/></svg>Emitir</a>
+    <a href="#clientes"><svg class="svg"><use href="#i-pessoas"/></svg>Clientes</a>
+    <a href="#historico"><svg class="svg"><use href="#i-relogio"/></svg>Histórico</a>
+  </nav>
+</div>
+</section>
+
+<!-- ======================= EMITIR ======================= -->
+<section class="tela" id="emitir">
+<div class="casca">
+  <header class="topo">
+    <div class="topo-linha">
+      <a class="marca" href="#inicio"><img src="logo-ddtrix.png" alt="Ddtrix Desentupidora e Dedetizadora"></a>
+      <nav class="nav" aria-label="Menu">
+        <a href="#inicio">Início</a><a href="#emitir" aria-current="page">Emitir O.S.</a><a href="#clientes">Clientes</a><a href="#historico">Histórico</a><a href="#">Administração</a>
+      </nav>
+      <div class="quem"><span class="nome">Eduarda</span><span class="avatar">E</span></div>
+    </div>
+    <div class="listras" aria-hidden="true"></div>
+  </header>
+  <main>
+    <div class="titulo-tela">
+      <div>
+        <h1>Agenda de quarta, 11/11</h1>
+        <p class="sub">5 atendimentos encontrados. Confira os avisos antes de gerar.</p>
+      </div>
+      <div class="resumo">
+        <span class="etiqueta etq-ok"><svg class="svg" style="width:14px;height:14px"><use href="#i-check"/></svg>3 prontas</span>
+        <span class="etiqueta etq-pend">1 pendência</span>
+        <span class="etiqueta etq-alerta">1 alerta</span>
+      </div>
+    </div>
+    <div class="emitir">
+      <div style="display:grid;gap:16px">
+        <div class="bloco selecao">
+          <label><input type="checkbox" checked> Selecionar todas (5)</label>
+          <div class="acoes">
+            <button class="botao botao-secundario" type="button"><svg class="svg"><use href="#i-zap"/></svg>ZIP</button>
+            <button class="botao botao-primario" type="button"><svg class="svg"><use href="#i-pdf"/></svg>Gerar PDF</button>
+          </div>
+        </div>
+        <ol class="dia">
+          <li class="parada">
+            <div class="marco"><time>09h</time><span class="ponto alerta"></span></div>
+            <article class="bloco os" onclick="location.hash='conferir'">
+              <div class="os-topo"><input type="checkbox" checked aria-label="Selecionar"><span class="etiqueta cat-caixas">Caixa d'água</span><span class="numero-os">20261111CX</span></div>
+              <div class="cliente">Pedro Luiz Silva Pinto</div>
+              <div class="local"><svg class="svg"><use href="#i-pino"/></svg><span>Av. Itália, 277 · Parque Monte Bianco · Araçoiaba da Serra</span></div>
+              <div class="aviso aviso-alerta"><svg class="svg"><use href="#i-alerta"/></svg><span><b>Endereço diferente do cadastro.</b> Salvo: R. Imola, 40. Escolha qual vale.</span></div>
+            </article>
+          </li>
+          <li class="parada">
+            <div class="marco"><time>09h</time><span class="ponto ok"></span></div>
+            <article class="bloco os">
+              <div class="os-topo"><input type="checkbox" checked aria-label="Selecionar"><span class="etiqueta cat-dedet">Dedetização</span><span class="numero-os">20261111DDP1</span></div>
+              <div class="cliente">Condomínio Portal do Ipanema</div>
+              <span class="reconhecido"><svg class="svg" style="width:15px;height:15px"><use href="#i-check"/></svg>Cliente reconhecido</span>
+              <div class="local"><svg class="svg"><use href="#i-pino"/></svg><span>Avenida Ipanema, 6055 · Jd. Novo Horizonte</span></div>
+              <p class="nota">Quando verificar os dispositivos de desratização, conferir se não estão em lugares que facilitam para virar e espalhar…</p>
+            </article>
+          </li>
+          <li class="parada">
+            <div class="marco"><time>11h</time><span class="ponto ok"></span></div>
+            <article class="bloco os">
+              <div class="os-topo"><input type="checkbox" checked aria-label="Selecionar"><span class="etiqueta cat-dedet">Dedetização</span><span class="numero-os">20261111DDP2</span></div>
+              <div class="cliente">Cond. Residencial Vista Ipanema</div>
+              <span class="reconhecido"><svg class="svg" style="width:15px;height:15px"><use href="#i-check"/></svg>Cliente reconhecido</span>
+              <div class="local"><svg class="svg"><use href="#i-pino"/></svg><span>R. Nelson De Gennaro, 654 · Lot. Dinora Rosa</span></div>
+            </article>
+          </li>
+          <li class="parada">
+            <div class="marco"><time>14:30</time><span class="ponto ok"></span></div>
+            <article class="bloco os">
+              <div class="os-topo"><input type="checkbox" checked aria-label="Selecionar"><span class="etiqueta cat-dedet">Dedetização</span><span class="numero-os">20261111DDP3</span></div>
+              <div class="cliente">Condomínio Mirante Ipanema</div>
+              <div class="local"><svg class="svg"><use href="#i-pino"/></svg><span>Rua Seraphim Banietti, 640 · Caguassu</span></div>
+            </article>
+          </li>
+          <li class="parada">
+            <div class="marco"><time>16:15</time><span class="ponto pend"></span></div>
+            <article class="bloco os">
+              <div class="os-topo"><input type="checkbox" aria-label="Selecionar"><span class="etiqueta cat-dedet">Dedetização · escorpião</span><span class="numero-os">20261111DDP4</span></div>
+              <div class="cliente">Marcus Souza 1234</div>
+              <div class="local"><svg class="svg"><use href="#i-pino"/></svg><span>Rua Sarapu Banirei, 862 · Jardim Simus</span></div>
+              <span class="maquininha">Cartão de débito · R$ 450 · <b>LEVAR A MAQUININHA</b></span>
+              <div class="aviso aviso-pend"><svg class="svg"><use href="#i-alerta"/></svg><span><b>Confira o nome do cliente.</b> "1234" parece não fazer parte do nome.</span></div>
+            </article>
+          </li>
+        </ol>
+      </div>
+      <aside class="col-direita bloco original so-pc">
+        <div style="display:flex;justify-content:space-between;align-items:center"><h3>Texto colado</h3><button class="botao botao-fantasma" type="button">Editar</button></div>
+        <pre>AGENDA (Quarta-Feira) 11/11
+1.
+📅 DATA: 11/11/2026
+👤 CLIENTE: <mark>Pedro Luiz Silva Pinto</mark>
+📍 SERVIÇO: <mark>Limpeza de caixa D'água</mark>
+🚗 LOCAL: <mark>Av. Italia, 277, parque Monte Bianco, Aracoiaba da Serra</mark>. Números salteados na Av. Itália. Referência: passando o lago, segundo quarteirão a esquerda. Chácara de esquina com a rua Imola.
+⏰ HORÁRIO APROXIMADO: <mark>09Hrs</mark>
+2.
+📆 DATA: 11/11/2026
+👤 CLIENTE: Condomínio Portal do Ipanema
+📍 SERVIÇO: Dedetização Completa/Desratização Mensal
+🚗 LOCAL: Avenida Ipanema, 6055 - Jd Novo Horizonte
+⏰ HORÁRIO APROXIMADO: 09Hrs
+Nota: Quando verificar os dispositivos…</pre>
+      </aside>
+    </div>
+  </main>
+  <nav class="abas" aria-label="Menu">
+    <a href="#inicio"><svg class="svg"><use href="#i-casa"/></svg>Início</a>
+    <a href="#emitir" aria-current="page"><svg class="svg"><use href="#i-doc"/></svg>Emitir</a>
+    <a href="#clientes"><svg class="svg"><use href="#i-pessoas"/></svg>Clientes</a>
+    <a href="#historico"><svg class="svg"><use href="#i-relogio"/></svg>Histórico</a>
+  </nav>
+</div>
+</section>
+
+<!-- ======================= CONFERIR ======================= -->
+<section class="tela" id="conferir">
+<div class="casca">
+  <header class="topo">
+    <div class="topo-linha">
+      <a class="marca" href="#inicio"><img src="logo-ddtrix.png" alt="Ddtrix Desentupidora e Dedetizadora"></a>
+      <nav class="nav" aria-label="Menu">
+        <a href="#inicio">Início</a><a href="#emitir" aria-current="page">Emitir O.S.</a><a href="#clientes">Clientes</a><a href="#historico">Histórico</a><a href="#">Administração</a>
+      </nav>
+      <div class="quem"><span class="nome">Eduarda</span><span class="avatar">E</span></div>
+    </div>
+    <div class="listras" aria-hidden="true"></div>
+  </header>
+  <main>
+    <a href="#emitir" class="botao botao-fantasma" style="margin:-8px 0 8px -12px"><svg class="svg"><use href="#i-voltar"/></svg>Agenda de 11/11</a>
+    <div class="titulo-tela">
+      <div>
+        <h1>Pedro Luiz Silva Pinto</h1>
+        <p class="sub" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="numero-os">20261111CX</span><span class="etiqueta cat-caixas">Caixa d'água</span><span class="etiqueta etq-alerta">1 alerta</span></p>
+      </div>
+    </div>
+    <div class="segmentado abas-conferir" role="tablist" style="grid-template-columns:1fr 1fr;margin-bottom:16px"><button aria-pressed="true">Dados</button><button aria-pressed="false">Prévia</button></div>
+    <div class="conferir">
+      <form class="bloco form-os">
+        <div class="aviso aviso-alerta"><svg class="svg"><use href="#i-alerta"/></svg><div style="display:grid;gap:10px"><span><b>O endereço da agenda é diferente do cadastro.</b></span>
+          <div style="display:grid;gap:8px;color:var(--texto)">
+            <label style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="radio" name="end" checked style="margin-top:3px"> Usar o da agenda só nesta O.S.<br>Av. Itália, 277 · Parque Monte Bianco</label>
+            <label style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="radio" name="end" style="margin-top:3px"> Salvar como novo endereço do cliente</label>
+            <label style="display:flex;gap:10px;align-items:flex-start;font-weight:500"><input type="radio" name="end" style="margin-top:3px"> Manter o do cadastro: R. Imola, 40</label>
+          </div></div>
+        </div>
+        <div class="secao-form">
+          <h3>Serviço</h3>
+          <div class="segmentado"><button type="button" aria-pressed="true">Caixas</button><button type="button" aria-pressed="false">Dedetização</button><button type="button" aria-pressed="false">Desratização</button></div>
+          <div class="campo"><label>Serviço (como vai na O.S.)</label><input class="entrada" value="Limpeza de caixa D'água"><span class="origem">Da agenda: <q>Limpeza de caixa D'água</q></span></div>
+          <div class="grade">
+            <div class="campo"><label>Data</label><input class="entrada num" value="11/11/2026"></div>
+            <div class="campo"><label>Horário</label><input class="entrada num" value="09:00"><span class="origem">Da agenda: <q>09Hrs</q></span></div>
+          </div>
+        </div>
+        <div class="secao-form">
+          <h3>Endereço</h3>
+          <div class="campo"><label>Rua e número</label><input class="entrada" value="Av. Itália, 277"></div>
+          <div class="grade">
+            <div class="campo"><label>Bairro</label><input class="entrada" value="Parque Monte Bianco"></div>
+            <div class="campo"><label>Cidade</label><input class="entrada" value="Araçoiaba da Serra/SP"></div>
+          </div>
+        </div>
+        <div class="secao-form">
+          <h3>Observações e pagamento</h3>
+          <div class="campo"><label>Observações (vão inteiras para a O.S.)</label><textarea class="entrada" rows="3">Números salteados na Av. Itália. Referência: passando o lago, segundo quarteirão a esquerda. Chácara de esquina com a rua Imola.</textarea></div>
+          <div class="campo pendente"><label>Forma de pagamento</label><input class="entrada" placeholder="Não informada na agenda (fica em branco)"></div>
+        </div>
+        <div class="barra-acoes">
+          <button class="botao botao-secundario" type="button">Salvar rascunho</button>
+          <button class="botao botao-primario" type="button"><svg class="svg"><use href="#i-check"/></svg>Confirmar O.S.</button>
+        </div>
+      </form>
+      <aside class="bloco previa so-pc">
+        <div class="previa-topo"><h3>Prévia da O.S.</h3><span class="ajuste">A4 · fonte normal</span></div>
+        <div class="folha" aria-label="Prévia do documento">
+          <div class="cab"><div><b>DDTRIX Desentupidora e Dedetizadora</b><br>CNPJ 28.709.469/0001-13<br>Alameda das Hortênsias, 754 – Jd. Simus</div><div style="text-align:right">CEVS<br>Validade: <span class="preench">10/11/2026</span></div></div>
+          <div>ORDEM DE SERVIÇO NÚMERO: <span class="preench"><b>20261111CX</b></span></div>
+          <div class="tit">INFORMAÇÕES DO CLIENTE</div>
+          <div class="lin"><span>Data: <span class="preench">11/11/2026</span></span><span>Hora início: <span class="preench">09:00</span></span><span style="grid-column:1/-1">Cliente: <span class="preench">Pedro Luiz Silva Pinto</span></span><span>Endereço: <span class="preench">Av. Itália, 277</span></span><span>Bairro: <span class="preench">Parque Monte Bianco</span></span><span>Cidade: <span class="preench">Araçoiaba da Serra/SP</span></span></div>
+          <div class="tit">INFORMAÇÕES DO SERVIÇO</div>
+          <div>Endereço: <span class="preench">Av. Itália, 277 - Parque Monte Bianco - Araçoiaba da Serra/SP</span><br>Garantia: 06 meses<br>SERVIÇO: <span class="preench">Limpeza de caixa D'água</span></div>
+          <div class="barras"><i></i><i style="width:80%"></i><i></i><i style="width:60%"></i></div>
+          <div>Observações: <span class="preench">Números salteados na Av. Itália. Referência: passando o lago, segundo quarteirão a esquerda. Chácara de esquina com a rua Imola.</span></div>
+          <div class="barras"><i style="width:70%"></i><i></i></div>
+          <div class="ass"><span>Cliente</span><span>Técnico</span></div>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+          <button class="botao botao-secundario" type="button"><svg class="svg"><use href="#i-pdf"/></svg>PDF</button>
+          <button class="botao botao-secundario" type="button"><svg class="svg"><use href="#i-imprimir"/></svg>Imprimir</button>
+          <button class="botao botao-secundario" type="button"><svg class="svg"><use href="#i-whats"/></svg>WhatsApp</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <nav class="abas" aria-label="Menu">
+    <a href="#inicio"><svg class="svg"><use href="#i-casa"/></svg>Início</a>
+    <a href="#emitir" aria-current="page"><svg class="svg"><use href="#i-doc"/></svg>Emitir</a>
+    <a href="#clientes"><svg class="svg"><use href="#i-pessoas"/></svg>Clientes</a>
+    <a href="#historico"><svg class="svg"><use href="#i-relogio"/></svg>Histórico</a>
+  </nav>
+</div>
+</section>
+
+<!-- ======================= CLIENTES ======================= -->
+<section class="tela" id="clientes">
+<div class="casca">
+  <header class="topo">
+    <div class="topo-linha">
+      <a class="marca" href="#inicio"><img src="logo-ddtrix.png" alt="Ddtrix Desentupidora e Dedetizadora"></a>
+      <nav class="nav" aria-label="Menu">
+        <a href="#inicio">Início</a><a href="#emitir">Emitir O.S.</a><a href="#clientes" aria-current="page">Clientes</a><a href="#historico">Histórico</a><a href="#">Administração</a>
+      </nav>
+      <div class="quem"><span class="nome">Eduarda</span><span class="avatar">E</span></div>
+    </div>
+    <div class="listras" aria-hidden="true"></div>
+  </header>
+  <main>
+    <div class="titulo-tela">
+      <div><h1>Clientes</h1><p class="sub">412 cadastrados</p></div>
+      <button class="botao botao-primario" type="button"><svg class="svg"><use href="#i-mais"/></svg>Novo cliente</button>
+    </div>
+    <div class="ferramentas">
+      <div class="busca"><svg class="svg"><use href="#i-lupa"/></svg><input class="entrada" placeholder="Buscar por nome, rua ou telefone"></div>
+    </div>
+    <div class="bloco">
+      <div class="cabecalho-lista cab-clientes"><span>Cliente</span><span>Endereço principal</span><span>Último serviço</span><span></span></div>
+      <ul class="lista lista-clientes">
+        <li><div><div class="t">Condomínio Portal do Ipanema</div><div class="d so-celular">Avenida Ipanema, 6055 · Jd. Novo Horizonte</div></div><div class="d so-pc">Avenida Ipanema, 6055 · Jd. Novo Horizonte</div><div class="d so-pc num">11/11/2026</div><div class="meta"><span class="etiqueta cat-dedet">Dedetização</span></div></li>
+        <li><div><div class="t">Cond. Residencial Vista Ipanema</div><div class="d so-celular">R. Nelson De Gennaro, 654 · Lot. Dinora Rosa</div></div><div class="d so-pc">R. Nelson De Gennaro, 654 · Lot. Dinora Rosa</div><div class="d so-pc num">11/11/2026</div><div class="meta"><span class="etiqueta cat-dedet">Dedetização</span></div></li>
+        <li><div><div class="t">Condomínio Montanhan</div><div class="d so-celular">Rua Almirante Giachetta, 180 · Parque Campolim</div></div><div class="d so-pc">Rua Almirante Giachetta, 180 · Parque Campolim</div><div class="d so-pc num">05/11/2026</div><div class="meta"><span class="etiqueta cat-caixas">Caixa d'água</span></div></li>
+        <li><div><div class="t">Cond. Residencial Safira</div><div class="d so-celular">R. Atanázio Soares, 3760 · Jardim Leocadia</div></div><div class="d so-pc">R. Atanázio Soares, 3760 · Jardim Leocadia</div><div class="d so-pc num">03/11/2026</div><div class="meta"><span class="etiqueta cat-dedet">Dedetização</span></div></li>
+        <li><div><div class="t">Condominio Villa Sunset</div><div class="d so-celular">Avenida Adolpho Massaglia, 600 · Campolim</div></div><div class="d so-pc">Avenida Adolpho Massaglia, 600 · Campolim</div><div class="d so-pc num">30/03/2026</div><div class="meta"><span class="etiqueta cat-desr">Desratização</span></div></li>
+        <li><div><div class="t">Pedro Luiz Silva Pinto</div><div class="d so-celular">R. Imola, 40 · Parque Monte Bianco · 2 endereços</div></div><div class="d so-pc">R. Imola, 40 · Parque Monte Bianco · 2 endereços</div><div class="d so-pc num">12/05/2026</div><div class="meta"><span class="etiqueta cat-caixas">Caixa d'água</span></div></li>
+      </ul>
+    </div>
+  </main>
+  <nav class="abas" aria-label="Menu">
+    <a href="#inicio"><svg class="svg"><use href="#i-casa"/></svg>Início</a>
+    <a href="#emitir"><svg class="svg"><use href="#i-doc"/></svg>Emitir</a>
+    <a href="#clientes" aria-current="page"><svg class="svg"><use href="#i-pessoas"/></svg>Clientes</a>
+    <a href="#historico"><svg class="svg"><use href="#i-relogio"/></svg>Histórico</a>
+  </nav>
+</div>
+</section>
+
+<!-- ======================= HISTÓRICO ======================= -->
+<section class="tela" id="historico">
+<div class="casca">
+  <header class="topo">
+    <div class="topo-linha">
+      <a class="marca" href="#inicio"><img src="logo-ddtrix.png" alt="Ddtrix Desentupidora e Dedetizadora"></a>
+      <nav class="nav" aria-label="Menu">
+        <a href="#inicio">Início</a><a href="#emitir">Emitir O.S.</a><a href="#clientes">Clientes</a><a href="#historico" aria-current="page">Histórico</a><a href="#">Administração</a>
+      </nav>
+      <div class="quem"><span class="nome">Eduarda</span><span class="avatar">E</span></div>
+    </div>
+    <div class="listras" aria-hidden="true"></div>
+  </header>
+  <main>
+    <div class="titulo-tela"><div><h1>Histórico</h1><p class="sub">Todas as O.S. emitidas</p></div></div>
+    <div class="ferramentas">
+      <div class="busca"><svg class="svg"><use href="#i-lupa"/></svg><input class="entrada" placeholder="Buscar por cliente, número ou serviço"></div>
+      <div class="filtros"><button class="filtro" aria-pressed="true">Todas</button><button class="filtro" aria-pressed="false">Caixas</button><button class="filtro" aria-pressed="false">Dedetização</button><button class="filtro" aria-pressed="false">Desratização</button></div>
+    </div>
+    <div class="bloco">
+      <div class="cabecalho-lista cab-hist"><span>Número</span><span>Cliente</span><span>Serviço</span><span>Por</span><span></span></div>
+      <div class="grupo-data">Quarta, 11 de novembro</div>
+      <ul class="lista lista-hist">
+        <li><span class="so-pc"><span class="numero-os">20261111CX</span></span><div><div class="t">Pedro Luiz Silva Pinto</div><div class="d so-celular"><span class="numero-os">20261111CX</span> · Caixa d'água</div></div><div class="d so-pc">Limpeza de caixa d'água</div><div class="d so-pc">Eduarda</div><div class="meta"><button class="botao botao-fantasma" aria-label="Baixar PDF"><svg class="svg"><use href="#i-pdf"/></svg></button></div></li>
+        <li><span class="so-pc"><span class="numero-os">20261111DDP1</span></span><div><div class="t">Condomínio Portal do Ipanema</div><div class="d so-celular"><span class="numero-os">20261111DDP1</span> · Dedetização</div></div><div class="d so-pc">Dedetização completa / Desratização</div><div class="d so-pc">Eduarda</div><div class="meta"><button class="botao botao-fantasma" aria-label="Baixar PDF"><svg class="svg"><use href="#i-pdf"/></svg></button></div></li>
+      </ul>
+      <div class="grupo-data">Quinta, 5 de novembro</div>
+      <ul class="lista lista-hist">
+        <li><span class="so-pc"><span class="numero-os">20261105CX</span></span><div><div class="t">Condomínio Montanhan</div><div class="d so-celular"><span class="numero-os">20261105CX</span> · Caixa d'água</div></div><div class="d so-pc">Limpeza de caixa d'água</div><div class="d so-pc">Juninho</div><div class="meta"><button class="botao botao-fantasma" aria-label="Baixar PDF"><svg class="svg"><use href="#i-pdf"/></svg></button></div></li>
+      </ul>
+      <div class="grupo-data">Terça, 3 de novembro</div>
+      <ul class="lista lista-hist">
+        <li><span class="so-pc"><span class="numero-os">20261103DD</span></span><div><div class="t">Cond. Residencial Safira</div><div class="d so-celular"><span class="numero-os">20261103DD</span> · Dedetização</div></div><div class="d so-pc">Dedetização completa / Desratização</div><div class="d so-pc">Eduarda</div><div class="meta"><button class="botao botao-fantasma" aria-label="Baixar PDF"><svg class="svg"><use href="#i-pdf"/></svg></button></div></li>
+      </ul>
+    </div>
+  </main>
+  <nav class="abas" aria-label="Menu">
+    <a href="#inicio"><svg class="svg"><use href="#i-casa"/></svg>Início</a>
+    <a href="#emitir"><svg class="svg"><use href="#i-doc"/></svg>Emitir</a>
+    <a href="#clientes"><svg class="svg"><use href="#i-pessoas"/></svg>Clientes</a>
+    <a href="#historico" aria-current="page"><svg class="svg"><use href="#i-relogio"/></svg>Histórico</a>
+  </nav>
+</div>
+</section>
+
+<script>
+  // Só a proposta: mostra a tela do link (#inicio, #emitir, #conferir, #clientes, #historico).
+  function mostrar() {
+    const id = location.hash.slice(1) || "inicio";
+    document.querySelectorAll(".tela").forEach(t => t.classList.toggle("ativa", t.id === id));
+    window.scrollTo(0, 0);
+  }
+  addEventListener("hashchange", mostrar);
+  mostrar();
+</script>
+</body>
+</html>
