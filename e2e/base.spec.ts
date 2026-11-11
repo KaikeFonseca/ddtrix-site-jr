@@ -32,16 +32,16 @@ test("login, quem está usando, início e histórico de alterações", async ({ 
   await page.getByLabel("Seu nome").fill(nome);
   await page.getByRole("button", { name: "Continuar" }).click();
 
-  await expect(page.getByRole("heading", { name: `Olá, ${nome}` })).toBeVisible();
-  for (const item of ["Emitir O.S.", "Clientes", "Histórico", "Administração"]) {
-    await expect(page.getByRole("link", { name: new RegExp(item) })).toBeVisible();
+  await expect(page.getByRole("heading", { name: new RegExp(`(Bom dia|Boa tarde|Boa noite), ${nome}`) })).toBeVisible();
+  for (const item of ["Emitir", "Clientes", "Histórico"]) {
+    await expect(page.getByRole("link", { name: new RegExp(item) }).filter({ visible: true }).first()).toBeVisible();
   }
 
   // Sem rolagem horizontal (seção 21).
   const larguraExtra = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(larguraExtra).toBeLessThanOrEqual(0);
 
-  await page.getByRole("link", { name: /Administração/ }).click();
+  await page.goto("/administracao");
   await expect(page.getByRole("cell", { name: nome }).first()).toBeVisible();
 
   // Sessão continua depois de recarregar.

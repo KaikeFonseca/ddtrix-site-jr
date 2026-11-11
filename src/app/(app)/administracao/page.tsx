@@ -1,6 +1,4 @@
 import { sql } from "@/lib/db";
-import { quemEsta } from "@/lib/quem-servidor";
-import { Topo } from "../topo";
 
 export const dynamic = "force-dynamic";
 
@@ -9,7 +7,6 @@ type Linha = { id: string; quando: Date; quem: string | null; acao: string; enti
 // Por enquanto mostra só o histórico de alterações (quem mudou o quê e quando).
 // Modelos, categorias e configurações entram na etapa 4.
 export default async function Administracao() {
-  const quem = await quemEsta();
   const linhas = await sql<Linha[]>`
     select id::text, quando, quem, acao, entidade from auditoria order by quando desc limit 50`;
   const formato = new Intl.DateTimeFormat("pt-BR", {
@@ -19,10 +16,8 @@ export default async function Administracao() {
   });
   return (
     <>
-      <Topo quem={quem} />
-      <main className="pagina">
-        <h1 style={{ marginTop: 0 }}>Administração</h1>
-        <section className="cartao">
+        <div className="titulo-tela"><div><h1>Administração</h1><p className="sub">Modelos, categorias e configurações entram na próxima etapa.</p></div></div>
+        <section className="bloco" style={{ padding: 20 }}>
           <h2 style={{ marginTop: 0, fontSize: 18 }}>Histórico de alterações</h2>
           {linhas.length === 0 ? (
             <p className="suave">Nada registrado ainda.</p>
@@ -45,7 +40,6 @@ export default async function Administracao() {
             </div>
           )}
         </section>
-      </main>
     </>
   );
 }
