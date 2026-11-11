@@ -1,0 +1,158 @@
+{
+  "caixas": [
+    {
+      "k": "validade",
+      "s": "10/11/2026",
+      "n": 1
+    },
+    {
+      "k": "osnum",
+      "s": "20261105CA",
+      "n": 1
+    },
+    {
+      "k": "data",
+      "s": "05/11/2026",
+      "n": 1
+    },
+    {
+      "k": "hora",
+      "s": "11:00",
+      "n": 1
+    },
+    {
+      "k": "endfull",
+      "s": "Rua Almirante Giachetta, 180 - Parque Campolim– Sorocaba/SP",
+      "n": 1
+    },
+    {
+      "k": "rua",
+      "s": "Rua Almirante Giachetta, 180",
+      "n": 1
+    },
+    {
+      "k": "bairro",
+      "s": "Parque Campolim",
+      "n": 1
+    },
+    {
+      "k": "cidade",
+      "s": "Sorocaba/SP",
+      "n": 2
+    },
+    {
+      "k": "cliente",
+      "s": "Condomínio Montanhan",
+      "n": 1
+    },
+    {
+      "k": "servico",
+      "s": "Limpeza de caixa D'água",
+      "n": 1
+    }
+  ],
+  "dedet": [
+    {
+      "k": "validade",
+      "s": "10/11/2026",
+      "n": 1
+    },
+    {
+      "k": "osnum",
+      "s": "202605686N",
+      "n": 1
+    },
+    {
+      "k": "data",
+      "s": "03/11/2026",
+      "n": 1
+    },
+    {
+      "k": "hora",
+      "s": "Tarde",
+      "n": 1
+    },
+    {
+      "k": "endfull",
+      "s": "R. Atanázio Soares, 3760 - Vila Terron Sorocaba/SP",
+      "n": 1
+    },
+    {
+      "k": "rua",
+      "s": "R. Atanázio Soares, 3760",
+      "n": 1
+    },
+    {
+      "k": "bairro",
+      "s": "Jardim Leocadia",
+      "n": 1
+    },
+    {
+      "k": "cidade",
+      "s": "Sorocaba/SP",
+      "n": 2
+    },
+    {
+      "k": "cliente",
+      "s": "Cond. Residencial Safira",
+      "n": 1
+    },
+    {
+      "k": "servico",
+      "s": "Dedetização Completa/Desratização",
+      "n": 1
+    }
+  ],
+  "desr": [
+    {
+      "k": "validade",
+      "s": "10/11/2026",
+      "n": 1
+    },
+    {
+      "k": "osnum",
+      "s": "20251110",
+      "n": 1
+    },
+    {
+      "k": "data",
+      "s": "30/03/2026",
+      "n": 1
+    },
+    {
+      "k": "hora",
+      "s": "09:00",
+      "n": 1
+    },
+    {
+      "k": "endfull",
+      "s": "Avenida Adolpho Massaglia, 600 - Campolim - Sorocaba/SP",
+      "n": 1
+    },
+    {
+      "k": "rua",
+      "s": "Avenida Adolpho Massaglia, 600",
+      "n": 1
+    },
+    {
+      "k": "bairro",
+      "s": "Campolim",
+      "n": 1
+    },
+    {
+      "k": "cidade",
+      "s": "Sorocaba/SP",
+      "n": 2
+    },
+    {
+      "k": "cliente",
+      "s": "Condominio Villa Sunset",
+      "n": 1
+    },
+    {
+      "k": "servico",
+      "s": "Desratização",
+      "n": 1
+    }
+  ]
+}
