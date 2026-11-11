@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icone, type NomeIcone } from "./icone";
+import { Sincronizar } from "./sincronizar";
 
 const MENU: { href: string; titulo: string; curto: string; icone: NomeIcone; celular: boolean }[] = [
   { href: "/", titulo: "Início", curto: "Início", icone: "casa", celular: true },
@@ -42,6 +43,7 @@ export function Casca({ quem, children }: { quem: string | null; children: React
         </div>
         <div className="listras" aria-hidden="true" />
       </header>
+      <Sincronizar />
       <main>{children}</main>
       <nav className="abas" aria-label="Menu">
         {MENU.filter((m) => m.celular).map((m) => (

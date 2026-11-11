@@ -53,6 +53,14 @@ test("interpretar agenda, conferir e gerar o PDF", async ({ page }, info) => {
   await expect(page.getByAltText("Prévia da folha da O.S.")).toBeVisible({ timeout: 60_000 });
   if (info.project.name === "celular") await page.getByRole("tab", { name: "Dados" }).click();
 
+  // Rodadas anteriores deixam clientes parecidos: se o sistema perguntar, é um cliente novo.
+  const novo = page.getByLabel("Não, é um cliente novo");
+  if (await novo.isVisible()) {
+    await novo.click();
+    await expect(novo).toBeChecked();
+    await expect(page.getByRole("button", { name: "Confirmar e gerar PDF" })).toBeEnabled();
+  }
+
   const download = page.waitForEvent("download", { timeout: 60_000 });
   await page.getByRole("button", { name: "Confirmar e gerar PDF" }).click();
   const arquivo = await download;

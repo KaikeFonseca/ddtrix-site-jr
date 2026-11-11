@@ -1,45 +1,44 @@
-import { sql } from "@/lib/db";
+import Link from "next/link";
+import { listarAuditoria, listarCategorias, listarModelos } from "@/lib/administracao";
+import { configuracoesOS } from "@/lib/os/servico";
+import { Alteracoes } from "./alteracoes";
+import { CategoriasAdm } from "./categorias";
+import { ConfiguracoesAdm } from "./configuracoes";
+import { ModelosAdm } from "./modelos";
 
 export const dynamic = "force-dynamic";
 
-type Linha = { id: string; quando: Date; quem: string | null; acao: string; entidade: string };
+const ABAS = [
+  ["modelos", "Modelos de O.S."],
+  ["categorias", "Categorias e serviços"],
+  ["configuracoes", "Configurações"],
+  ["alteracoes", "Histórico de alterações"],
+] as const;
+type Aba = (typeof ABAS)[number][0];
 
-// Por enquanto mostra só o histórico de alterações (quem mudou o quê e quando).
-// Modelos, categorias e configurações entram na etapa 4.
-export default async function Administracao() {
-  const linhas = await sql<Linha[]>`
-    select id::text, quando, quem, acao, entidade from auditoria order by quando desc limit 50`;
-  const formato = new Intl.DateTimeFormat("pt-BR", {
-    dateStyle: "short",
-    timeStyle: "short",
-    timeZone: "America/Sao_Paulo",
-  });
+export default async function Administracao({ searchParams }: { searchParams: Promise<{ aba?: string; pagina?: string }> }) {
+  const p = await searchParams;
+  const aba: Aba = (ABAS.find(([k]) => k === p.aba)?.[0] ?? "modelos") as Aba;
+
   return (
     <>
-        <div className="titulo-tela"><div><h1>Administração</h1><p className="sub">Modelos, categorias e configurações entram na próxima etapa.</p></div></div>
-        <section className="bloco" style={{ padding: 20 }}>
-          <h2 style={{ marginTop: 0, fontSize: 18 }}>Histórico de alterações</h2>
-          {linhas.length === 0 ? (
-            <p className="suave">Nada registrado ainda.</p>
-          ) : (
-            <div style={{ overflowX: "auto" }}>
-              <table>
-                <thead>
-                  <tr><th>Quando</th><th>Quem</th><th>O quê</th></tr>
-                </thead>
-                <tbody>
-                  {linhas.map((l) => (
-                    <tr key={l.id}>
-                      <td>{formato.format(l.quando)}</td>
-                      <td>{l.quem ?? "—"}</td>
-                      <td>{l.acao} · {l.entidade}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </section>
+      <div className="titulo-tela">
+        <div>
+          <h1>Administração</h1>
+          <p className="sub">Modelos, serviços e configurações. Toda mudança fica registrada com nome e horário.</p>
+        </div>
+      </div>
+      <nav className="abas-adm filtros" aria-label="Seções da administração">
+        {ABAS.map(([k, t]) => (
+          <Link key={k} href={k === "modelos" ? "/administracao" : `/administracao?aba=${k}`} className="filtro" aria-current={aba === k ? "page" : undefined} aria-pressed={aba === k} style={{ display: "inline-flex", alignItems: "center", textDecoration: "none" }}>
+            {t}
+          </Link>
+        ))}
+      </nav>
+      {aba === "modelos" && <ModelosAdm modelos={JSON.parse(JSON.stringify(await listarModelos()))} />}
+      {aba === "categorias" && <CategoriasAdm {...await listarCategorias()} />}
+      {aba === "configuracoes" && <ConfiguracoesAdm inicial={await configuracoesOS()} />}
+      {aba === "alteracoes" && <Alteracoes {...await listarAuditoria(Number(p.pagina) || 1)} pagina={Number(p.pagina) || 1} />}
     </>
   );
 }

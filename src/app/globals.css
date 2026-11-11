@@ -245,10 +245,10 @@ input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--marinho-
 .grupo-data { font-size: 13px; font-weight: 700; color: var(--texto-3); padding: 18px 20px 6px; background: var(--marinho-50); border-top: 1px solid var(--linha); }
 @media (min-width: 900px) {
   .lista-clientes > li { grid-template-columns: 1.6fr 1.4fr 1fr auto; }
-  .lista-hist > li { grid-template-columns: 150px 1.4fr 1.2fr 120px auto; }
+  .lista-hist > li { grid-template-columns: 150px 1.4fr 1.2fr 120px 184px; }
   .cabecalho-lista { display: grid; padding: 12px 20px; font-size: 13px; font-weight: 650; color: var(--texto-3); border-bottom: 1px solid var(--linha); }
   .lista-clientes + .cabecalho-lista, .cab-clientes { grid-template-columns: 1.6fr 1.4fr 1fr auto; }
-  .cab-hist { grid-template-columns: 150px 1.4fr 1.2fr 120px auto; }
+  .cab-hist { grid-template-columns: 150px 1.4fr 1.2fr 120px 184px; }
   .so-celular { display: none !important; }
 }
 @media (max-width: 899px) {
@@ -306,3 +306,40 @@ th { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacin
 tbody tr:last-child td { border-bottom: 0; }
 td { font-variant-numeric: tabular-nums; }
 .suave { color: var(--texto-3); }
+
+/* Passo 4: histórico, clientes, administração */
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.botao-icone { width: 44px; min-width: 44px; padding: 0; justify-content: center; }
+.acoes-os { gap: 2px; flex-wrap: nowrap; }
+.link-limpo { color: inherit; text-decoration: none; display: block; overflow-wrap: anywhere; }
+.link-limpo:hover { color: var(--marinho-600); text-decoration: underline; }
+.mais-filtros summary { cursor: pointer; font-size: 14px; font-weight: 600; color: var(--marinho-600); width: fit-content; min-height: 32px; display: flex; align-items: center; }
+.paginacao { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin-top: 16px; }
+.paginacao > :last-child { justify-self: end; }
+.ficha { display: grid; gap: 20px; }
+@media (min-width: 900px) { .ficha { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); align-items: start; } }
+.secao { padding: 20px; display: grid; gap: 14px; }
+.secao > h2 { margin: 0; font-size: 18px; }
+.secao-topo { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.secao-topo h2 { margin: 0; font-size: 18px; }
+.endereco-item { display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 12px 14px; border: 1px solid var(--linha); border-radius: var(--raio-p); }
+.endereco-item .r { font-weight: 600; }
+.endereco-item .d { font-size: 14px; color: var(--texto-3); }
+.abas-adm { display: flex; gap: 6px; overflow-x: auto; margin-bottom: 16px; padding-bottom: 2px; scrollbar-width: none; }
+.abas-adm a { white-space: nowrap; }
+.versao { display: grid; gap: 10px; padding: 14px 16px; border: 1px solid var(--linha); border-radius: var(--raio-p); }
+.versao.oficial { border-color: var(--ok); background: #f6fbf7; }
+.versao-topo { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; }
+.campos-tabela td .entrada { min-height: 38px; padding: 6px 10px; font-size: 14px; }
+.campos-tabela td.nao { color: var(--alerta); font-weight: 600; }
+.campos-tabela td.sim { color: var(--ok); font-weight: 600; }
+.palavras { display: flex; flex-wrap: wrap; gap: 6px; }
+.palavras span { font-size: 13px; padding: 3px 10px; border-radius: 999px; background: var(--marinho-50); color: var(--marinho-800); }
+.teste-img { width: 100%; max-width: 520px; border: 1px solid var(--linha); border-radius: 6px; background: #fff; }
+.acoes-os { justify-content: flex-end; }
+/* Lista de O.S. em coluna estreita (ficha do cliente): sempre no formato do celular. */
+.lista-compacta .cabecalho-lista { display: none; }
+.lista-compacta .lista-hist > li { grid-template-columns: minmax(0, 1fr) auto; }
+.lista-compacta .so-pc { display: none !important; }
+.lista-compacta .so-celular { display: initial !important; }
+.lista-compacta .chips.so-celular { display: flex !important; }

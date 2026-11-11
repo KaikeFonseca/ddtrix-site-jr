@@ -71,6 +71,20 @@ export function ConferirOS({ ordemInicial, pendenciasIniciais }: { ordemInicial:
   const original = formDe(ordem);
   const mudou = JSON.stringify(form) !== JSON.stringify(original);
 
+  // Outra pessoa alterou esta O.S. em outro aparelho: atualiza a tela se não houver edição em andamento.
+  const versaoServidor = JSON.stringify([ordemInicial.numero, ordemInicial.status, ordemInicial.dados]);
+  const vistaPorUltimo = useRef(versaoServidor);
+  useEffect(() => {
+    if (versaoServidor === vistaPorUltimo.current) return;
+    vistaPorUltimo.current = versaoServidor;
+    if (mudou || salvando || gerando) return;
+    setOrdem(ordemInicial);
+    setPendencias(pendenciasIniciais);
+    setForm(formDe(ordemInicial));
+    setVersaoPrevia((v) => v + 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [versaoServidor]);
+
   const definir = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
 
   async function enviar(corpo: Record<string, unknown>): Promise<boolean> {
@@ -145,7 +159,7 @@ export function ConferirOS({ ordemInicial, pendenciasIniciais }: { ordemInicial:
   async function excluir() {
     if (!window.confirm("Excluir este rascunho? Isso não pode ser desfeito.")) return;
     const res = await fetch(`/api/os/${ordem.id}`, { method: "DELETE" });
-    if (res.ok) router.push(ordem.agendaId ? `/emitir/${ordem.agendaId}` : "/emitir");
+    if (res.ok) router.push(ordem.agendaId ? `/emitir/${ordem.agendaId}` : "/historico");
     else setErro((await res.json().catch(() => ({}))).erro ?? "Não foi possível excluir.");
   }
 
@@ -166,9 +180,9 @@ export function ConferirOS({ ordemInicial, pendenciasIniciais }: { ordemInicial:
 
   return (
     <>
-      <Link href={ordem.agendaId ? `/emitir/${ordem.agendaId}` : "/emitir"} className="botao botao-fantasma" style={{ margin: "-8px 0 8px -12px" }}>
+      <Link href={ordem.agendaId ? `/emitir/${ordem.agendaId}` : "/historico"} className="botao botao-fantasma" style={{ margin: "-8px 0 8px -12px" }}>
         <Icone nome="voltar" />
-        {d.data ? `Agenda de ${dataComDia(d.data)}` : "Voltar"}
+        {ordem.agendaId && d.data ? `Agenda de ${dataComDia(d.data)}` : ordem.agendaId ? "Voltar à agenda" : "Histórico"}
       </Link>
       <div className="titulo-tela">
         <div>

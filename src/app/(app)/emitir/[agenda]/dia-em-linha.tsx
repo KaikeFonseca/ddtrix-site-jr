@@ -92,7 +92,7 @@ export function DiaEmLinha({ itens, textoOriginal }: { itens: ItemDia[]; textoOr
           </p>
         </div>
         <div className="resumo">
-          {contagem.emitidas > 0 && <span className="etiqueta etq-neutra">{contagem.emitidas} emitidas</span>}
+          {contagem.emitidas > 0 && <span className="etiqueta etq-neutra">{contagem.emitidas} {contagem.emitidas === 1 ? "emitida" : "emitidas"}</span>}
           {contagem.prontas > 0 && (
             <span className="etiqueta etq-ok">
               <Icone nome="check" tamanho={14} />

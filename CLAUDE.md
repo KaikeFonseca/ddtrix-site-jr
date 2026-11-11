@@ -30,12 +30,19 @@ A especificação completa está em `ESPECIFICACAO.md`. Os modelos .docx, a logo
   sessão assinada em cookie (90 dias), limite de 5 tentativas erradas em 15 minutos.
 - "Quem está usando?" fica em cookie no aparelho e vai para a `auditoria`.
 - Toda alteração de cadastro, modelo ou O.S. chama `registrarAuditoria` (`src/lib/auditoria.ts`).
+- Atualização entre aparelhos: `src/components/sincronizar.tsx` consulta `/api/versao` (maior id da
+  auditoria) a cada 8 s e chama `router.refresh()` quando muda. Por isso toda gravação precisa auditar.
+- Regras por área: `src/lib/os/servico.ts` (agenda, conferência, emissão), `src/lib/historico.ts`,
+  `src/lib/cadastro-clientes.ts`, `src/lib/administracao.ts` (modelos versionados, categorias, configurações).
+- Geração de PDF precisa de LibreOffice (`soffice`) e poppler (`pdftoppm`) no servidor: não roda em
+  hospedagem "serverless" sem esses programas.
 
 ## Comandos
 
 - `npm run dev` — sistema em http://localhost:3000 (precisa de `.env.local`, veja `.env.example`)
 - `npm run db:migrar` — aplica migrações
 - `npm run senha -- "senha"` — gera o hash da senha da empresa
+- `DATABASE_URL=... npx tsx scripts/demo-semear.ts` — coloca O.S. fictícias num banco de demonstração
 - `npm test` — testes de unidade (defina `DATABASE_URL_TESTE` para os testes de banco)
 - `npm run e2e` — testes no navegador (computador e celular)
 - `npm run typecheck` e `npm run lint`

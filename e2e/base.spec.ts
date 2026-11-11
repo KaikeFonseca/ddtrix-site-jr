@@ -41,8 +41,8 @@ test("login, quem está usando, início e histórico de alterações", async ({ 
   const larguraExtra = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(larguraExtra).toBeLessThanOrEqual(0);
 
-  await page.goto("/administracao");
-  await expect(page.getByRole("cell", { name: nome }).first()).toBeVisible();
+  await page.goto("/administracao?aba=alteracoes");
+  await expect(page.locator("main").getByText(nome).first()).toBeVisible();
 
   // Sessão continua depois de recarregar.
   await page.reload();

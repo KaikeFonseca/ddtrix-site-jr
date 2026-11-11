@@ -303,7 +303,7 @@ export async function previaDaOrdem(id: string): Promise<{ png: Uint8Array; ajus
   return r;
 }
 
-async function pdfParaPng(pdf: Uint8Array): Promise<Uint8Array> {
+export async function pdfParaPng(pdf: Uint8Array): Promise<Uint8Array> {
   const dir = await mkdtemp(join(tmpdir(), "ddtrix-png-"));
   try {
     await writeFile(join(dir, "os.pdf"), pdf);
